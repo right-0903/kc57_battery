@@ -1,4 +1,10 @@
 # What is it?
+This a Linux kernel battery driver for Intel Whitebook LAPKC71F/LAPKC71E/LAPKC51F systems (Intel NUC X15, XMG Fusion 15m22, ...). This is a minimized battery kernel module, picked out from [qc71_laptop module][qc71-laptop-github]. You can use this module with [TUXEDO Control Center][tcc-github].
+
+
+# The below is original reamde
+
+# What is it?
 This a Linux kernel platform driver for Intel Whitebook LAPQC71X systems (XMG Fusion 15, Eluktronics MAG 15, Aftershock Vapor 15, ...).
 
 
@@ -228,3 +234,4 @@ You can use `acpi_listen` to see what events are generated when you plug the mac
 [issues]: https://github.com/pobrn/qc71_laptop/issues
 [gnome-ext-freon]: https://extensions.gnome.org/extension/841/freon/
 [tcc-github]: https://github.com/tuxedocomputers/tuxedo-control-center
+[qc71-laptop-github]: https://github.com/pobrn/qc71_laptop
