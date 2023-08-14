@@ -104,7 +104,7 @@ static struct acpi_battery_hook qc71_laptop_batt_hook = {
 
 int __init qc71_battery_setup(void)
 {
-	if (nobattery || !qc71_features.batt_charge_limit)
+	if (nobattery)
 		return -ENODEV;
 
 	battery_hook_register(&qc71_laptop_batt_hook);
@@ -120,3 +120,10 @@ void qc71_battery_cleanup(void)
 }
 
 #endif
+
+
+module_init(kc57_battery_setup);
+module_exit(kc57_battery_cleanup);
+
+MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("KC57 laptop battery driver");
