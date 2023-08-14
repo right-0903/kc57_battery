@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
-#ifndef QC71_LAPTOP_EC_H
-#define QC71_LAPTOP_EC_H
+#ifndef KC57_LAPTOP_EC_H
+#define KC57_LAPTOP_EC_H
 
 #include <linux/compiler_types.h>
 #include <linux/types.h>
@@ -222,7 +222,7 @@
 
 /* ========================================================================== */
 
-union qc71_ec_result {
+union kc57_ec_result {
 	uint32_t dword;
 	struct {
 		uint16_t w1;
@@ -236,30 +236,30 @@ union qc71_ec_result {
 	} bytes;
 };
 
-int __must_check qc71_ec_transaction(uint16_t addr, uint16_t data,
-				     union qc71_ec_result *result, bool read);
+int __must_check kc57_ec_transaction(uint16_t addr, uint16_t data,
+				     union kc57_ec_result *result, bool read);
 
-static inline __must_check int qc71_ec_read(uint16_t addr, union qc71_ec_result *result)
+static inline __must_check int kc57_ec_read(uint16_t addr, union kc57_ec_result *result)
 {
-	return qc71_ec_transaction(addr, 0, result, true);
+	return kc57_ec_transaction(addr, 0, result, true);
 }
 
-static inline __must_check int qc71_ec_write(uint16_t addr, uint16_t data)
+static inline __must_check int kc57_ec_write(uint16_t addr, uint16_t data)
 {
-	return qc71_ec_transaction(addr, data, NULL, false);
+	return kc57_ec_transaction(addr, data, NULL, false);
 }
 
 static inline __must_check int ec_write_byte(uint16_t addr, uint8_t data)
 {
-	return qc71_ec_write(addr, data);
+	return kc57_ec_write(addr, data);
 }
 
 static inline __must_check int ec_read_byte(uint16_t addr)
 {
-	union qc71_ec_result result;
+	union kc57_ec_result result;
 	int err;
 
-	err = qc71_ec_read(addr, &result);
+	err = kc57_ec_read(addr, &result);
 
 	if (err)
 		return err;
@@ -267,4 +267,4 @@ static inline __must_check int ec_read_byte(uint16_t addr)
 	return result.bytes.b1;
 }
 
-#endif /* QC71_LAPTOP_EC_H */
+#endif /* KC57_LAPTOP_EC_H */

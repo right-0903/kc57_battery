@@ -65,58 +65,58 @@ static ssize_t charge_control_end_threshold_store(struct device *dev, struct dev
 }
 
 static DEVICE_ATTR_RW(charge_control_end_threshold);
-static struct attribute *qc71_laptop_batt_attrs[] = {
+static struct attribute *kc57_laptop_batt_attrs[] = {
 	&dev_attr_charge_control_end_threshold.attr,
 	NULL
 };
-ATTRIBUTE_GROUPS(qc71_laptop_batt);
+ATTRIBUTE_GROUPS(kc57_laptop_batt);
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 2, 0)
-static int qc71_laptop_batt_add(struct power_supply *battery, struct acpi_battery_hook *hook)
+static int kc57_laptop_batt_add(struct power_supply *battery, struct acpi_battery_hook *hook)
 #else
-static int qc71_laptop_batt_add(struct power_supply *battery)
+static int kc57_laptop_batt_add(struct power_supply *battery)
 #endif
 {
 	if (strcmp(battery->desc->name, "BAT0") != 0)
 		return 0;
 
-	return device_add_groups(&battery->dev, qc71_laptop_batt_groups);
+	return device_add_groups(&battery->dev, kc57_laptop_batt_groups);
 }
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 2, 0)
-static int qc71_laptop_batt_remove(struct power_supply *battery, struct acpi_battery_hook *hook)
+static int kc57_laptop_batt_remove(struct power_supply *battery, struct acpi_battery_hook *hook)
 #else
-static int qc71_laptop_batt_remove(struct power_supply *battery)
+static int kc57_laptop_batt_remove(struct power_supply *battery)
 #endif
 {
 	if (strcmp(battery->desc->name, "BAT0") != 0)
 		return 0;
 
-	device_remove_groups(&battery->dev, qc71_laptop_batt_groups);
+	device_remove_groups(&battery->dev, kc57_laptop_batt_groups);
 	return 0;
 }
 
-static struct acpi_battery_hook qc71_laptop_batt_hook = {
-	.add_battery    = qc71_laptop_batt_add,
-	.remove_battery = qc71_laptop_batt_remove,
-	.name           = "QC71 laptop battery extension",
+static struct acpi_battery_hook kc57_laptop_batt_hook = {
+	.add_battery    = kc57_laptop_batt_add,
+	.remove_battery = kc57_laptop_batt_remove,
+	.name           = "KC57 laptop battery extension",
 };
 
-int __init qc71_battery_setup(void)
+int __init kc57_battery_setup(void)
 {
 	if (nobattery)
 		return -ENODEV;
 
-	battery_hook_register(&qc71_laptop_batt_hook);
+	battery_hook_register(&kc57_laptop_batt_hook);
 	battery_hook_registered = true;
 
 	return 0;
 }
 
-void qc71_battery_cleanup(void)
+void kc57_battery_cleanup(void)
 {
 	if (battery_hook_registered)
-		battery_hook_unregister(&qc71_laptop_batt_hook);
+		battery_hook_unregister(&kc57_laptop_batt_hook);
 }
 
 #endif

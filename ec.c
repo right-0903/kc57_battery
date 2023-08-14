@@ -16,18 +16,18 @@ static DECLARE_RWSEM(ec_lock);
 
 /* ========================================================================== */
 
-int __must_check qc71_ec_lock(void)
+int __must_check kc57_ec_lock(void)
 {
 	return down_write_killable(&ec_lock);
 }
 
-void qc71_ec_unlock(void)
+void kc57_ec_unlock(void)
 {
 	up_write(&ec_lock);
 }
 
-int __must_check qc71_ec_transaction(uint16_t addr, uint16_t data,
-				     union qc71_ec_result *result, bool read)
+int __must_check kc57_ec_transaction(uint16_t addr, uint16_t data,
+				     union kc57_ec_result *result, bool read)
 {
 	uint8_t buf[] = {
 		addr & 0xFF,
@@ -58,8 +58,8 @@ int __must_check qc71_ec_transaction(uint16_t addr, uint16_t data,
 
 	memset(output_buf, 0, sizeof(output_buf));
 
-	status = wmi_evaluate_method(QC71_WMI_WMBC_GUID, 0,
-				     QC71_WMBC_GETSETULONG_ID, &input, &output);
+	status = wmi_evaluate_method(KC57_WMI_WMBC_GUID, 0,
+				     KC57_WMBC_GETSETULONG_ID, &input, &output);
 
 	if (read) up_read(&ec_lock);
 	else      up_write(&ec_lock);
@@ -97,4 +97,4 @@ out:
 
 	return err;
 }
-ALLOW_ERROR_INJECTION(qc71_ec_transaction, ERRNO);
+ALLOW_ERROR_INJECTION(kc57_ec_transaction, ERRNO);
