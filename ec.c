@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: GPL-2.0
-#include "pr.h"
 
 #include <linux/acpi.h>
 #include <linux/compiler_types.h>

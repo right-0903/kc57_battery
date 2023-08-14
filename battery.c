@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: GPL-2.0
-#include "pr.h"
 
 #include <linux/device.h>
 #include <linux/kernel.h>
@@ -11,7 +10,6 @@
 #include <linux/version.h>
 
 #include "ec.h"
-#include "features.h"
 
 /* ========================================================================== */
 
