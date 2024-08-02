@@ -1,3 +1,6 @@
+# Updates
+There were potential race conditions, when kc57_battery and tuxedo read or write ec at same time. Now, it is fixed. However, out of convenient, I use ec I/O methods provided by tuxedo rather than use the same mutex with other ec I/O methods, and this makes codes more clean. That means you should build it with [tuxedo-driver](https://github.com/tuxedocomputers/tuxedo-drivers), I maintain an AUR package [kc57-drivers-dkms](https://aur.archlinux.org/packages/kc57-drivers-dkms) which puts tuxedo and charging limit together. You can still use another branch, it keeps old and independent codes. Or you can implement ec I/O methods by yourself(refer to qc71_laptop and tuxedo-driver).
+
 # What is it?
 This a Linux kernel battery driver for Intel Whitebook LAPKC71F/LAPKC71E/LAPKC51F systems (Intel NUC X15, XMG Fusion 15m22, ...). This is a minimized battery kernel module, picked out from [qc71_laptop module][qc71-laptop-github]. You can use this module with [TUXEDO Control Center][tcc-github].
 
