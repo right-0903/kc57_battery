@@ -1,4 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
+/*
+ * kc57_battery.c - A charging limit driver for KC57 laptop
+ *
+ * based on qc71_laptop: https://github.com/pobrn/qc71_laptop
+ *
+ * Copyright (C) 2020-2023 Barnabás Pőcze <pobrn@protonmail.com>
+ * Copyright (C) 2023-2024 nuvole <mitltlatltl@gmail.com>
+ */
 
 #include <linux/device.h>
 #include <linux/kernel.h>
@@ -128,4 +136,5 @@ module_init(kc57_battery_setup);
 module_exit(kc57_battery_cleanup);
 
 MODULE_LICENSE("GPL");
-MODULE_DESCRIPTION("KC57 laptop battery driver");
+MODULE_AUTHOR("nuvole <mitltlatltl@gmail.com>");
+MODULE_DESCRIPTION("Charging limit driver for KC57 laptop");

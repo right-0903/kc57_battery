@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-2.0
 MODNAME = kc57_battery
-MODVER = 0.1
+MODVER = 1.0
 
 obj-m += $(MODNAME).o
 
