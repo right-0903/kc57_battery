@@ -4,8 +4,6 @@ MODVER = 0.1
 
 obj-m += $(MODNAME).o
 
-$(MODNAME)-y += ec.o \
-
 $(MODNAME)-$(CONFIG_ACPI_BATTERY) += battery.o
 
 KVER = $(shell uname -r)

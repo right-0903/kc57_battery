@@ -9,7 +9,7 @@
 #include <linux/types.h>
 #include <linux/version.h>
 
-#include "ec.h"
+#include "kc57_battery.h"
 
 /* ========================================================================== */
 
@@ -26,10 +26,11 @@ MODULE_PARM_DESC(nobattery, "do not expose battery related controls (default=fal
 static ssize_t charge_control_end_threshold_show(struct device *dev,
 						 struct device_attribute *attr, char *buf)
 {
-	int status = ec_read_byte(BATT_CHARGE_CTRL_ADDR);
+	int status, r_status;
+	r_status = uniwill_read_ec_ram(BATT_CHARGE_CTRL_ADDR, (u8 *)&status);
 
-	if (status < 0)
-		return status;
+	if (r_status < 0)
+		return r_status;
 
 	status &= BATT_CHARGE_CTRL_VALUE_MASK;
 
@@ -42,21 +43,22 @@ static ssize_t charge_control_end_threshold_show(struct device *dev,
 static ssize_t charge_control_end_threshold_store(struct device *dev, struct device_attribute *attr,
 						  const char *buf, size_t count)
 {
-	int status, value;
+	int status, value, r_status;
 
 	if (kstrtoint(buf, 10, &value) || !(1 <= value && value <= 100))
 		return -EINVAL;
 
-	status = ec_read_byte(BATT_CHARGE_CTRL_ADDR);
-	if (status < 0)
-		return status;
+	r_status = uniwill_read_ec_ram(BATT_CHARGE_CTRL_ADDR, (u8 *)&status);
+
+	if (r_status < 0)
+		return r_status;
 
 	if (value == 100)
 		value = 0;
 
 	status = (status & ~BATT_CHARGE_CTRL_VALUE_MASK) | value;
 
-	status = ec_write_byte(BATT_CHARGE_CTRL_ADDR, status);
+	status = uniwill_write_ec_ram(BATT_CHARGE_CTRL_ADDR, status & 0xFF);
 
 	if (status < 0)
 		return status;
@@ -102,7 +104,7 @@ static struct acpi_battery_hook kc57_laptop_batt_hook = {
 	.name           = "KC57 laptop battery extension",
 };
 
-int __init kc57_battery_setup(void)
+static int __init kc57_battery_setup(void)
 {
 	if (nobattery)
 		return -ENODEV;
@@ -113,13 +115,13 @@ int __init kc57_battery_setup(void)
 	return 0;
 }
 
-void kc57_battery_cleanup(void)
+static void kc57_battery_cleanup(void)
 {
 	if (battery_hook_registered)
 		battery_hook_unregister(&kc57_laptop_batt_hook);
 }
 
-#endif
+#endif /* IS_ENABLED(CONFIG_ACPI_BATTERY) */
 
 
 module_init(kc57_battery_setup);
