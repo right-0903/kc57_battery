@@ -25,10 +25,6 @@
 
 static bool battery_hook_registered;
 
-static bool nobattery;
-module_param(nobattery, bool, 0444);
-MODULE_PARM_DESC(nobattery, "do not expose battery related controls (default=false)");
-
 /* ========================================================================== */
 
 static ssize_t charge_control_end_threshold_show(struct device *dev,
@@ -114,7 +110,20 @@ static struct acpi_battery_hook kc57_laptop_batt_hook = {
 
 static int __init kc57_battery_setup(void)
 {
-	if (nobattery)
+	struct power_supply *psy;
+	union power_supply_propval val;
+	bool present;
+
+	psy = power_supply_get_by_name("BAT0");
+	if (!psy ||
+		power_supply_get_property(psy, POWER_SUPPLY_PROP_PRESENT, &val))
+		present = false;
+	else
+		present = val.intval;
+
+	power_supply_put(psy);
+
+	if (!present)
 		return -ENODEV;
 
 	battery_hook_register(&kc57_laptop_batt_hook);
